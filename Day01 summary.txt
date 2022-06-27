@@ -1,0 +1,19 @@
+Day 01 AWS introduction Summary.
+
+AWS Global Infracture: AWS global infrastructure is distributed all over the world.
+    It uses a regional zones for quick availability, and will be denoted like (us-east, us-west, europe)
+    Avaibility zone are subset of regional zones, and denoted like (us-east A, us-east B, etc)
+
+
+AWS Shared repo model:
+    - AWS is responsible for all the software and hardware part of the cloud functions like Storage, Database, Networking,      Regions, etc.
+    - Customer is responsible for data, network and firewall security, data encryptions, networking traffic and so on.
+
+AWS Pricing model and Support that comes with it.
+    - Free (very few, mostly billing supports)
+    - Developer (Billings, set up help, and request help as you go)
+    - Business (Hands on support)
+
+AWS Features and services
+    EC2 - help create configured vitrual machine for projects. 
+
