@@ -1,0 +1,14 @@
+Day02 Summary VPC
+
+VPC - Virtual Private cloud
+    - Enables user to launch AWS resources into the virtual network
+    - Each Regions as a default VPC created by Amazon, shouldn't delete it.
+    - Can create a Custom VPC in each region, VPCs cannot communicate with each other even in the same region without connector.
+    - Can create multiple subnets inside VPC for different Availability zone. Subnets inside the VPC can communicate with each other.
+
+NAT Gateway - Network Access Translation Gateway
+    - Used to give VPC access to the public internet.
+    - Can be used for private subnets to access internet.
+    - Nat gateway is completely managed by Amazon, and has elastic IP allocation
+    - Nat instance is completely managed by user.
+    - While creating NAT Gateway connection type need to be pulic to reach internet.
