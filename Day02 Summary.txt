@@ -1,14 +1,21 @@
 Day02 Summary VPC
 
 VPC - Virtual Private cloud
-    - Enables user to launch AWS resources into the virtual network
-    - Each Regions as a default VPC created by Amazon, shouldn't delete it.
-    - Can create a Custom VPC in each region, VPCs cannot communicate with each other even in the same region without connector.
-    - Can create multiple subnets inside VPC for different Availability zone. Subnets inside the VPC can communicate with each other.
 
-NAT Gateway - Network Access Translation Gateway
-    - Used to give VPC access to the public internet.
-    - Can be used for private subnets to access internet.
-    - Nat gateway is completely managed by Amazon, and has elastic IP allocation
-    - Nat instance is completely managed by user.
-    - While creating NAT Gateway connection type need to be pulic to reach internet.
+VPC enables users to launch AWS resources into the virtual network. There is default VPC automatically created by AWS for every reason, which shouldn't be deleted.
+Users can also create a custom VPC with their specifications. the VPCs cannot communicate with each other without the help of connectors.
+Each VPCs can have multiple subnets for different Availability Zones(AZs) of the regions. Subnets inside the VPC can communicate with each other even if they are in diferent AZs.
+
+Route Tables: 
+
+Route table contains set of rules that will help direct the network traffic from VPC and subnets. There are many route tables conceps, Main route table controls all the subnets inside the VPC that are not connected to other tables. We can also create a custom route table for our VPC.
+
+Security:
+ 
+ There are to main secutiry components built in a VPC. The Network ACLs is a optional layer that works as a firewall for VPC. It is tied to subnets and control traffic in an out of subnets. Security groups also work as a virtual firewall that controls one or more instances. one or more Security groups can be specified during launch and can be modified anytime.
+
+ 
+NAT Gateway - Network Address Translation Gateway
+
+NAT Gateways are used to give VPC access to the public internet. They are also used for private subnets to access internet. While creating NAT Gateway, the connection type need to be public to reach internet.
+NAT Gateway is completely managed by Amazon and has a elastic IP allocation. Whereas, NAT instance is completely managed by user and user is responsible for modification.
