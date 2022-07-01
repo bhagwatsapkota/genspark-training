@@ -1,0 +1,60 @@
+Day04 Summary
+
+
+Lab - Connection between EC2 Server public subnet and RDS private subnet
+
+Requirements:
+    - Create a Custom VPC
+    - Create one public and one private subnet
+    - Connect public subnet to internet Gateway using route table
+    - Create an ec2 instance using the public subnet
+    - Create an RDS database using the private subnet
+    - Establish a connection between ec2 instance and db instance
+    - Run a Web server on ec2 instance that connects to the db instance
+
+
+The steps I took to complete the Lab
+
+I created a custom VPC with the IP range 10.0.0.0/16. I didn't change any other configuration.
+
+I then create two new subnets from subnets tab. I selected the custom VPC I created for VPC inside
+For first subnet I gave "publicsubnet" name, IP range of 10.0.1.0/28 and selected one random AZ.
+For second subnet I gave "privatesubnet" name, IP range of 10.0.2.0/28 and selected different AZ.
+
+I then created two Route tables with custom VPC, one for public subnet and another for private subnet.
+
+I created a internet gateway and attached it to the custom VPC by selecting the gateway I created and Action -> Attach to VPC
+
+Attaching Subnets and internet gateway to route table.
+
+Opened public route table and under Routes: Edit routes -> Add roues -> Destination: 0.0.0.0/0, Target: Internet gateway
+
+Assigned public subnet to public route table and private subnet to private route table.
+Subnet associations -> Edit subnet associations -> select correct subnet -> save
+
+Set public route table as Main route table. Select public route table -> Action -> Set main route table
+
+
+Launch ec2 instance. Gave it a nameand selected new key pair saved in aws.
+Edited the network setting and selected the custom VPC and public subnet created earlier.
+Created a new security group and allowed SSH, HTTPS, and HTTP traffic; and launched instance.
+
+Creating the databse in RDS.
+Selected standard create and choose MYSQL as engine option and free tier template.
+In the setting changed the name and created a password for the database.
+In connectivity section choose the custom VPC, and selct no to public access, Everything else remain the same.
+
+Connecting EC2 instance to RDS:
+After the database is done creating, go to security group page.
+Select the security id that is associated with the database and edit inbound rules
+Select Add rule and select all traffic for Type. For the Source select the source id associated with ec2 instance
+Did the same thing to EC2 security group to add security id from database.
+
+Connecting the ec2 server to the database.
+
+Connecting a database to the web application is a challenged for me since I don't have experience in it. 
+I found a tutorial page in aws userguide that should how to create and connect a web server.
+I followed their instructions and created a php file in apache server and saved database information for the server to connect.
+Then created a simple html file to check if it is working.
+
+
