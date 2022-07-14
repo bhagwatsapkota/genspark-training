@@ -1,0 +1,15 @@
+
+//Jenkins scripted flie
+
+
+node {
+    stages {
+        stage ('Build') {
+            if (isUnix()) {
+                echo 'Running on Linux'
+            } else {
+                echo 'Running on Window'
+            }
+        }
+    }
+}
