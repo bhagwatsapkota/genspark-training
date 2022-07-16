@@ -1,0 +1,39 @@
+Question 2:
+
+create eks cluster
+    Used amazon eks UI to create a cluster and assign required IAM role.
+    After cluster created, added 2 helpernods and assign helper Iam role.
+
+
+Start aws cli
+    Configured the eks using the commends listed below
+
+Create directory
+mkdir -p $HOME/.local/bin
+cd $HOME/.local/bin
+Note: The installation directory is set to$HOME/.local/bin
+This is because the persistent storage that is maintained between sessions is $HOME in cloudshell.
+cd $HOME/.local/bin
+Download the latest release with the command:
+curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+Validate the binary (optional)
+Download the kubectl checksum file:
+curl -LO https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256
+Validate the kubectl binary against the checksum file:
+echo "$(cat kubectl.sha256) kubectl" | sha256sum --check
+If valid, the output is:
+kubectl: OK
+Apply execute permissions to the binary.
+chmod +x ./kubectl
+Set path
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+export PATH
+Configure kubectl with EKS API Server credential.
+aws eks --region update-kubeconfig --name 
+
+-create docker image
+
+docker build -t $docker_username:<TAG>
+
+delete cluster
+    eksctl delete cluster --name --region

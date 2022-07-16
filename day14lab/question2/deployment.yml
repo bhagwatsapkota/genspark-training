@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-app
+spec:
+  selector:
+    matchLabels:
+      app: sample-app
+  replicas: 3
+  strategy: 
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sample-app
+    spec:
+      containers:
+      - name: sample-app
+        image: 459662432384.dkr.ecr.us-east-2.amazonaws.com/jenkinsapp:latest
+
+        ports:
+        - containerPort: 80
+          protocol: TCP
