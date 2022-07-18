@@ -3,6 +3,7 @@ pipeline {
 
     environment {
             deployAddress = "459662432384.dkr.ecr.us-east-2.amazonaws.com/jenkinsapp"
+            dockerBuild = "sample-app"
     }
     stages {
 
@@ -14,18 +15,19 @@ pipeline {
         stage('Build') { 
             steps {
                 echo 'Building..'
-                bat "docker build --no-cahe -t ${sample-app.py}"
+                bat "docker build --no-cahe -t ${dockerBuild}:py"
             }
         }
         stage('Test') { 
             steps {
                 echo 'Testing..'
+                bat "docker run --name ${env.dockerBuild}"
             }
         }
         stage('Deploy') { 
             steps {
                 echo 'Deploying..'
-                bat "docker tag ${sample-app.py}:latest ${deployAddress}:latest"
+                bat "docker tag ${dockerBuild}:latest ${deployAddress}:latest"
             }
         }
     }

@@ -18,13 +18,13 @@ module "eks" {
             name = "Node1"
             instance_type = "t2.micro"
             asg_desired_capacity = 1
-            additional_security_group_ids = [aws_security_group.network-traffic]
+            security_group_ids = [aws_security_group.network-traffic]
         },
         {
             name = "Node2"
             instance_type = "t2.micro"
             asg_desired_capacity = 1
-            additional_security_group_ids = [aws_security_group.network-traffic]
+            security_group_ids = [aws_security_group.network-traffic]
         },
     ]
 }
