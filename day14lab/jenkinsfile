@@ -1,11 +1,20 @@
 pipeline {
-
-   
     agent any 
+
+    environment {
+            deployAddress = "459662432384.dkr.ecr.us-east-2.amazonaws.com/jenkinsapp"
+    }
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/bhagwatsapkota/genspark-training.git']]])
+            }
+        }
         stage('Build') { 
             steps {
                 echo 'Building..'
+                bat "docker build --no-cahe -t ${sample-app.py}"
             }
         }
         stage('Test') { 
@@ -16,6 +25,7 @@ pipeline {
         stage('Deploy') { 
             steps {
                 echo 'Deploying..'
+                bat "docker tag ${sample-app.py}:latest ${deployAddress}:latest"
             }
         }
     }
