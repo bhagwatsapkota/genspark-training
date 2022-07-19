@@ -1,33 +1,31 @@
 pipeline {
     agent any
-
-    stages {
-
-        stage('Checkout repository') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/bhagwatsapkota/genspark-training.git']]])
+    environment {
+        projectHome = "C:\\Users\\sapko\\Desktop\\genspark-training\\day14lab\\question3"
+    }
+    tools {
+        terraform 'terraform'
+    }
+    stages{
+    
+    stage ('terraform format check') {
+        steps {
+            bat 'terraform fmt'
+        }
+    }
+    stage('terraform Init') {
+            steps{
+                dir("{projectHome}") {
+                    bat 'terraform init'
+                }
             }
         }
-        stage ('Terrafrom get') {
-            steps {
-                bat "terraform get -update=true"
+    stage('terraform apply') {
+       steps{
+                dir("{projectHome}") {
+                    bat 'terraform apply --auto-approve'
+                }
             }
-        }
-        stage('Terraform init') {
-            steps {
-                bat "terraform init"
-            }
-        }
-        stage('Terraform plan') {
-            steps {
-                bat "terrafrom plan -input=false -out tfplan"
-                bat "terrafrom show tfplan > tfplan.txt"
-            }
-        }
-        stage('Terrafrom apply') {
-            steps {
-                bat "terrafrom apply -lock=false -input=false tfplan --auto-approve"
-            }
-        }
+    }
     }
 }

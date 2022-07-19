@@ -1,38 +1,42 @@
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-}
 
-module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  version         = "17.24.0"
-  cluster_name    = "lab-cluster"
-  cluster_version = "1.22"
-  subnets         = module.vpc.public_subnets
+# create eks cluster
 
-  vpc_id = module.vpc.vpc_id
+resource "aws_eks_cluster" "jenkins-eks-lab" {
+    name = "jenkins-eks-lab"
+    role_arn = aws_iam_role.masterIAM.arn
 
-  worker_groups = [
-        {
-            name = "Node1"
-            instance_type = "t2.micro"
-            asg_desired_capacity = 1
-            security_group_ids = [aws_security_group.network-traffic]
-        },
-        {
-            name = "Node2"
-            instance_type = "t2.micro"
-            asg_desired_capacity = 1
-            security_group_ids = [aws_security_group.network-traffic]
-        },
+    vpc_config {
+        subnet_ids = [aws_subnet.newSubnet-1.id, aws_subnet.newSubnet-2.id]
+    }
+
+    depends_on = [
+        aws_iam_role_policy_attachment.master-EKSCluster,
+        aws_iam_role_policy_attachment.master-EKSVPCResource
     ]
 }
 
-data "aws_eks_cluster" "cluster" {
-    name = module.eks.cluster_id
-}
+# create helper nodes for the cluster
 
-data "aws_eks_cluster_auth" "cluster" {
-    name = module.eks.cluster_id
+resource "aws_eks_node_group" "helperNodes" {
+    cluster_name = aws_eks_cluster.jenkins-eks-lab.name
+    node_group_name = "helperNodes"
+    node_role_arn = aws_iam_role.workerNodes.arn
+    subnet_ids = [aws_subnet.newSubnet-1.id, aws_subnet.newSubnet-2.id]
+
+    scaling_config {
+        desired_size = 2
+        max_size = 2
+        min_size = 2
+    }
+
+    ami_type = "AL2_x86_64"
+    instance_types = ["t2.micro"]
+    capacity_type = "ON_DEMAND"
+    disk_size = 20
+
+    depends_on = [
+        aws_iam_role_policy_attachment.workernodes-CNI-Policy,
+        aws_iam_role_policy_attachment.workernodes-EC2Container,
+        aws_iam_role_policy_attachment.workernodes-EKSWorkerNode
+    ]
 }
