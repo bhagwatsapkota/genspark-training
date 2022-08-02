@@ -1,0 +1,25 @@
+For the healthcheck lab I used helloworld image from dockercloud
+
+I created a local file names "helloworld-deployment.yaml" and uploaded it to AWS cli
+
+Then I use following commands to delpoy the application and expose the ports
+
+kubectl apply -f helloworld-deployment.yaml
+
+expose commands
+kubectl expose deployment helloworld-deployment  --type=ClusterIP  --name=helloworld-service-cluster-ip
+kubectl expose deployment helloworld-deployment  --type=NodePort  --name=helloworld-service-nodeport
+kubectl expose deployment helloworld-deployment  --type=LoadBalancer  --name=helloworld-service-loadbalancer
+
+I then created a "liveness.yaml" local file and used the liveness code I found here:
+ https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes
+
+ I changed the name and port number. Then I uploaded it to the aws-ClusterIP
+
+ I created a pod using the yaml file and following command
+
+ kubectl apply -f liveness.yaml
+
+ I then used the command below to check the status
+
+ kubectl describe pod liveness-check
